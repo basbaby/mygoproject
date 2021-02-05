@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mygoproject
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: mygoproject
+  template:
+    metadata:
+      labels:
+        name: mygoproject
+    spec:
+      containers:
+      - image: kiranbabycontainerrepo.azurecr.io/mygoprojectsecret:mygoproject
+        name: kiranbabycontainerrepo
+        ports:
+          - containerPort: 8081
+      imagePullSecrets: 
+      - name: njcdemo1
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mygoproject+service
+spec:
+  type: LoadBalancer
+  selector:
+    name: mygoproject
+  ports:
+  - name: http  
+    port: 80
+    targetPort: 8081
